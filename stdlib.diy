@@ -1,0 +1,175 @@
+;; Some logical operators.
+
+(define not
+    (lambda (b)
+        (if b #f #t)))
+
+(define or
+    (lambda (a b)
+        (if a #t (if b #t #f))))
+
+(define and
+    (lambda (a b)
+        (if a (if b #t #f) #f)))
+
+(define xor
+    (lambda (a b)
+        (if a
+            (if b #f #t)
+            (if b #t #f))))
+
+;; more comparison
+
+(define >=
+    (lambda (a b)
+        (or
+            (eq a b)
+            (>  a b))))
+
+(define <=
+    (lambda (a b)
+        (or
+            (eq a b)
+            (<  a b))))
+
+; returns the smaller of two elements
+(define min
+    (lambda (a b)
+        (if (< a b) a b)
+    )
+)
+
+; returns the larger of two elements
+(define max
+    (lambda (a b)
+        (if (> a b) a b)
+    )
+)
+
+;; some list functions
+
+; sum over all list elements
+(define sum
+    (lambda (l)
+        (if (empty l)
+            0
+            (+
+                (head l)
+                (sum (tail l))))))
+
+; length of a list
+(define length
+    (lambda (l)
+        (if (empty l)
+                0
+                (+ 1 (length (tail l))))))
+
+; appends two lists
+(define append
+    (lambda (a b)
+        (if (empty a)
+            b
+            (cons
+                (head a)
+                (append (tail a) b)
+                ))))
+
+; filters a list to include only elements that fulfil a given predicate
+(define filter
+    (lambda (predicate list)
+        (if (empty list) list ; filter empty list -> return empty list
+            (if (predicate (head list))
+                (cons (head list) (filter predicate (tail list))) ; keep element, filter rest
+                (filter predicate (tail list))
+            )
+        ) ; skip element, filter rest
+    )
+)
+
+; apply a function to every list element and return a list of the result values
+(define map
+    (lambda (func list)
+        (if (empty list)
+            list ; map over empty list -> empty list
+            (cons
+                (func (head list))
+                (map func (tail list))
+            )
+        )
+    )
+)
+
+; reverse a list
+(define reverse
+    (lambda (list)
+        (if (empty list)
+            '()
+            (append
+                (reverse (tail list))
+                ( cons (head list) '() )
+            )
+        )
+    )
+)
+
+; generate a list of numbers between two given number
+(define range
+    (lambda (lower upper)
+        (if (> lower upper)
+            '()
+            (cons
+                lower
+                (range (+ lower 1) upper)
+            )
+        )
+    )
+)
+
+; filters a list to only include elements smaller than the pivot
+(define smaller
+    (lambda (pivot list)
+        (filter (lambda (a) (< a pivot)) list)
+    )
+)
+
+; filters a list to only include elements greater or equal to the
+(define greater_and_equal
+    (lambda (pivot list)
+        (filter (lambda (a) (>= a pivot)) list)
+    )
+)
+
+; remove all occurences of an element in a list
+(define remove
+    (lambda (element list)
+        (filter (lambda (e) (not (eq e element))) list)
+    )
+)
+
+; return the smallest element in a list
+(define list_min
+    (lambda (list)
+        (if (eq (length list) 1)
+            (head list)
+            (min
+                (head list)
+                (list_min (tail list))
+            )
+        )
+    )
+)
+
+; sort a list
+(define sort
+    (lambda (list)
+        (if (<= (length list) 1)
+            list
+            (cons
+                (list_min list) ; take smallest element in front
+                (sort
+                    (remove (list_min list) list) ; sort remaining list without smallest element
+                )
+            )
+        )
+    )
+)
