@@ -5,14 +5,14 @@ An experimental implementation of a functional programming language based on the
 
 Heavily based off the amazing [diylisp](https://github.com/kvalle/diy-lisp) project.
 
-# Run the example
+## Run the example
 
 ```
 ./lambda example.py
 ```
 
-# Interactive interpreter
+## Interactive interpreter
 
 ```
 ./lambda
-```
+``
