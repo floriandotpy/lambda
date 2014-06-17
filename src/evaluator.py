@@ -21,8 +21,6 @@ def evaluate(ast, env):
         return ast
     elif is_integer(ast):
         return ast
-    elif ast[0] == "quote":
-        return ast[1]
     elif is_symbol(ast):
         return env.lookup(ast)
 
@@ -33,6 +31,8 @@ def evaluate(ast, env):
         unary functions
     """
     cmd = ast[0]
+    if cmd == "quote":
+        return ast[1]
     if cmd == "atom":
         return is_atom(evaluate(ast[1], env))
 
@@ -41,28 +41,28 @@ def evaluate(ast, env):
     """
     if cmd == "eq":
         return is_atom(evaluate(ast[1], env)) \
-            and is_atom(evaluate(evaluate(ast[2], env), env)) \
+            and is_atom(evaluate(ast[2], env)) \
             and evaluate(ast[1], env) == evaluate(ast[2], env)
 
     if cmd in ("+", "-", "/", "*", "mod", ">", "<"):
-        v_1 = evaluate(ast[1], env)
-        v_2 = evaluate(ast[2], env)
-        if not (is_integer(v_1) and is_integer(v_2)):
+        arg_1 = evaluate(ast[1], env)
+        arg_2 = evaluate(ast[2], env)
+        if not (is_integer(arg_1) and is_integer(arg_2)):
             raise LispError("Arguments have to be integers.")
     if cmd == "+":
-        return evaluate(ast[1], env) + evaluate(ast[2], env)
+        return arg_1 + arg_2
     if cmd == "-":
-        return evaluate(ast[1], env) - evaluate(ast[2], env)
+        return arg_1 - arg_2
     if cmd == "/":
-        return evaluate(ast[1], env) / evaluate(ast[2], env)
+        return arg_1 / arg_2
     if cmd == "*":
-        return evaluate(ast[1], env) * evaluate(ast[2], env)
+        return arg_1 * arg_2
     if cmd == "mod":
-        return evaluate(ast[1], env) % evaluate(ast[2], env)
+        return arg_1 % arg_2
     if cmd == ">":
-        return evaluate(ast[1], env) > evaluate(ast[2], env)
+        return arg_1 > arg_2
     if cmd == "<":
-        return evaluate(ast[1], env) < evaluate(ast[2], env)
+        return arg_1 < arg_2
 
     """
         ternary functions
