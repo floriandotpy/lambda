@@ -12,23 +12,23 @@ from .interpreter import interpret, interpret_file
 # where it is supported (i.e. UNIX-y systems)
 import readline
 
+# Python 2 / Python 3 compatibility
+try:
+   input = raw_input
+except NameError:
+   pass
 
 def repl():
     """Start the interactive Read-Eval-Print-Loop"""
     print()
-    print("                 " + faded("                             \`.    T       "))
-    print("    Welcome to   " + faded("   .--------------.___________) \   |    T  "))
-    print("   the DIY-lisp  " + faded("   |//////////////|___________[ ]   !  T |  "))
-    print("       REPL      " + faded("   `--------------'           ) (      | !  "))
-    print("                 " + faded("                              '-'      !    "))
+    print("               " + colored("       _             ", "red"))
+    print("    Welcome to " + colored("        \            ", "red"))
+    print("      lambda   " + colored("        /\           ", "red"))
+    print("               " + colored("       /  \          ", "red"))
+    print("               " + colored("      /    \         ", "red"))
     print(faded("  use ^D to exit"))
     print()
 
-    # Python 2 / Python 3 compatibility
-    # try:
-    #    input = raw_input
-    # except NameError:
-    #    pass
 
     env = Environment()
     interpret_file(join(dirname(relpath(__file__)), '..', 'stdlib.diy'), env)
@@ -71,7 +71,7 @@ def read_expression():
 def read_line(prompt):
     """Return touple of user input line and number of unclosed parens"""
 
-    line = raw_input(colored(prompt, "grey", "bold"))
+    line = input(colored(prompt, "grey", "bold"))
     line = remove_comments(line + "\n")
     return line, line.count("(") - line.count(")")
 
