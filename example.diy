@@ -1,6 +1,3 @@
-;; Some example lisp code. By the end of the tutorial, our Lisp will be
-;; able to run this.
-
 ;; To run the code:
 ;;
 ;;    ./lambda example.diy

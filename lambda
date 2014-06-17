@@ -5,8 +5,15 @@ import sys
 
 from src.interpreter import interpret_file
 from src.repl import repl
+from src.types import Environment
 
 if len(sys.argv) > 1:
-    print(interpret_file(sys.argv[1]))
+    env = Environment()
+
+    # load std lib
+    interpret_file('stdlib.diy', env)
+
+    # load file
+    print( interpret_file(sys.argv[1], env ))
 else:
     repl()
